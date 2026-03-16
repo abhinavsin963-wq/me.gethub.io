@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinav Kumar Singh | Portfolio</title>
+    <link rel="stylesheet" href="01.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+       
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: 800;
+            font-size: 1.15em;
+            color: #000;
+            transition: all 0.1s ease;
+            border-radius: 4px;
+            padding: 0 4px;
+            display: inline-block;
+        }
+        .cta-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .speech-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        .speech-btn:hover { background: #2980b9; transform: translateY(-2px); }
+        .speech-btn.speaking { background: #2c3e50; animation: pulse-blue 1.5s infinite; }
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">Master Challenger</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html" class="active">Skills</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Hello, I'm <span>Abhinav</span></h1>
+                <p id="about-text">Hello, my name is Abhinav Kumar Singh, and I am a Class 8 student currently pursuing my education at a CBSE-affiliated school. I am a passionate student, developer, and aspiring tech innovator with a strong interest in modern and emerging technologies. From a young age, I have been deeply fascinated by how technology works and how software can be used to solve real-world problems. I actively dedicate my time to learning and building skills in Software Development, Website Development, Game Development, and Artificial Intelligence. Technology is not just a subject for me—it is a passion and a long-term career goal. As a tech enthusiast by heart, I enjoy exploring programming concepts, understanding logic, experimenting with ideas, and continuously improving my technical abilities. I believe in learning by doing, and I am always eager to work on projects that enhance my creativity, problem-solving skills, and practical knowledge. Despite being a school student, I aim to stay updated with the latest trends in the tech industry and strive to grow as a developer step by step. My ultimate goal is to become a skilled software engineer and innovator, capable of creating impactful technologies that can contribute positively to society. I strongly believe that continuous learning, curiosity, and dedication are the keys to success, and I am committed to developing myself both academically and technically for a strong future in the field of technology.</p>
+                
+                <div class="cta-container">
+                    <a href="https://masterchallenger5.blogspot.com" class="btn">View My Projects</a>
+                    <button class="speech-btn" id="speaker-icon" onclick="speakText('about-text')">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="img/1.jpeg" alt="Abhinav Kumar Singh">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Master Challenger </p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/master_challenger.in?igsh=bzQxM2VvaDRrM213" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/masterchallenger/" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.reddit.com/user/Different_Skill_7655/" target="_blank" class="reddit"><i class="fab fa-reddit"></i></a>
+        </div>
+    </div>
+</footer>
+
+    <script src="1.js"></script>
+    <script>
+        let synth = window.speechSynthesis;
+        let isSpeaking = false;
+
+        function speakText(elementId) {
+            const element = document.getElementById(elementId);
+            const btn = document.getElementById('speaker-icon');
+            const originalText = element.innerText;
+
+            if (synth.speaking) {
+                synth.cancel();
+                if (isSpeaking) {
+                    element.innerHTML = originalText;
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    isSpeaking = false;
+                    return;
+                }
+            }
+
+            const words = originalText.split(/\s+/);
+            element.innerHTML = words.map(word => `<span>${word}</span>`).join(" ");
+            const spans = element.querySelectorAll("span");
+            
+            const utterance = new SpeechSynthesisUtterance(originalText);
+            const voices = synth.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('English')) || voices[0];
+            
+            if (preferredVoice) utterance.voice = preferredVoice;
+            utterance.rate = 0.9;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                btn.classList.add('speaking');
+                btn.innerHTML = '<i class="fas fa-stop"></i>';
+            };
+
+            utterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    const charIndex = event.charIndex;
+                    let currentLength = 0;
+                    
+                    spans.forEach((span, index) => {
+                        const wordText = words[index];
+                        const wordStart = originalText.indexOf(wordText, currentLength);
+                        
+                        if (charIndex >= wordStart && charIndex < wordStart + wordText.length) {
+                            span.classList.add('highlight');
+                        } else {
+                            span.classList.remove('highlight');
+                        }
+                        currentLength = wordStart + wordText.length;
+                    });
+                }
+            };
+
+            utterance.onend = () => {
+                element.innerHTML = originalText;
+                btn.classList.remove('speaking');
+                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                isSpeaking = false;
+            };
+
+            synth.speak(utterance);
+        }
+    </script>
+</body>
+</html>

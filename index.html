@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinav Kumar Singh | Portfolio</title>
+    <!-- Linking External CSS -->
+    <link rel="stylesheet" href="1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">Master Challenger</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Hi, I'm <span>Abhinav</span></h1>
+                <p id="intro-text">I am an 8th-grade student. I have a deep interest in software, website, and game development. I am always excited to learn new technologies and build things with AI.</p>
+                
+                <div class="cta-container">
+                    <a href="#" class="btn">View My Projects</a>
+                    <button class="speech-btn" id="speaker-icon" onclick="speakText('intro-text')">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- User's Image with new effect class -->
+                <img src="img/1.jpeg" alt="Abhinav Kumar Singh" class="hover-profile-img">
+            </div>
+        </section>
+
+        <!-- Core Skills Section -->
+        <section class="skills-section">
+            <h2 class="skills-title">My Skills</h2>
+            <div class="skills-container">
+                <div class="skill-item" onmouseover="highlightSegment('html')" onmouseout="resetChart()">
+                    <div class="skill-circle"><i class="fab fa-html5" style="font-size: 3rem; color: #ff9800;"></i></div>
+                    <p>HTML</p>
+                </div>
+                <div class="skill-item" onmouseover="highlightSegment('css')" onmouseout="resetChart()">
+                    <div class="skill-circle"><i class="fab fa-css3-alt" style="font-size: 3rem; color: #2196f3;"></i></div>
+                    <p>CSS</p>
+                </div>
+                <div class="skill-item" onmouseover="highlightSegment('js')" onmouseout="resetChart()">
+                    <div class="skill-circle"><i class="fab fa-js" style="font-size: 3rem; color: #ffeb3b;"></i></div>
+                    <p>JavaScript</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Website Complementing Skills -->
+        <section class="complementary-skills">
+            <h2 class="skills-title">Website Complementing Skills</h2>
+            <div class="chart-wrapper">
+                <div id="skillChart" class="pie-chart"></div>
+                
+                <ul class="legend">
+                    <li class="legend-item" onmouseover="highlightSegment('html')" onmouseout="resetChart()">
+                        <span class="dot html"></span> HTML (50%)
+                    </li>
+                    <li class="legend-item" onmouseover="highlightSegment('css')" onmouseout="resetChart()">
+                        <span class="dot css"></span> CSS (30%)
+                    </li>
+                    <li class="legend-item" onmouseover="highlightSegment('js')" onmouseout="resetChart()">
+                        <span class="dot js"></span> JavaScript (20%)
+                    </li>
+                </ul>
+                <p style="margin-top: 20px; color: #7f8c8d; font-size: 0.9rem;">(Hover over icons or names to view chart segments)</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Master Challenger </p>
+            <div class="social-links">
+                <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="reddit"><i class="fab fa-reddit"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="1.js"></script>
+    <script>
+        const chart = document.getElementById('skillChart');
+
+        function highlightSegment(skill) {
+            chart.className = 'pie-chart'; 
+            if (skill === 'html') {
+                chart.classList.add('highlight-html');
+                updateCenterText("HTML 50%");
+            } else if (skill === 'css') {
+                chart.classList.add('highlight-css');
+                updateCenterText("CSS 30%");
+            } else if (skill === 'js') {
+                chart.classList.add('highlight-js');
+                updateCenterText("JS 20%");
+            }
+        }
+
+        function resetChart() {
+            chart.className = 'pie-chart';
+            updateCenterText("Skills");
+        }
+
+        function updateCenterText(text) {
+            const style = document.createElement('style');
+            style.id = 'chart-text-style';
+            const oldStyle = document.getElementById('chart-text-style');
+            if(oldStyle) oldStyle.remove();
+            style.innerHTML = `.pie-chart::after { content: "${text}"; }`;
+            document.head.appendChild(style);
+        }
+
+        let synth = window.speechSynthesis;
+        let isSpeaking = false;
+
+        function speakText(elementId) {
+            const element = document.getElementById(elementId);
+            const btn = document.getElementById('speaker-icon');
+            const originalText = element.innerText;
+
+            if (synth.speaking) {
+                synth.cancel();
+                if (isSpeaking) {
+                    element.innerHTML = originalText;
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    isSpeaking = false;
+                    return;
+                }
+            }
+
+            const words = originalText.split(/\s+/);
+            element.innerHTML = words.map(word => `<span>${word}</span>`).join(" ");
+            const spans = element.querySelectorAll("span");
+            
+            const utterance = new SpeechSynthesisUtterance(originalText);
+            utterance.lang = 'en-US'; 
+            utterance.rate = 1.0; 
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                btn.classList.add('speaking');
+                btn.innerHTML = '<i class="fas fa-stop"></i>';
+            };
+
+            utterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    const charIndex = event.charIndex;
+                    let currentLength = 0;
+                    spans.forEach((span, index) => {
+                        const wordText = words[index];
+                        const wordStart = originalText.indexOf(wordText, currentLength);
+                        if (charIndex >= wordStart && charIndex < wordStart + wordText.length) {
+                            span.classList.add('highlight');
+                        } else {
+                            span.classList.remove('highlight');
+                        }
+                        currentLength = wordStart + wordText.length;
+                    });
+                }
+            };
+
+            utterance.onend = () => {
+                element.innerHTML = originalText;
+                btn.classList.remove('speaking');
+                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                isSpeaking = false;
+            };
+
+            synth.speak(utterance);
+        }
+    </script>
+</body>
+</html>
